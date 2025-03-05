@@ -7,7 +7,7 @@
                  [org.clojure/data.csv "1.1.0"]
                  [org.clojure/data.xml "0.0.8"]
                  [clj-http "3.13.0"]]
-  :main ^:skip-aot soap_sync.core
+  :main ^:skip-aot soap-sync.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all
                        :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}})
