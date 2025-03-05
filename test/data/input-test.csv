@@ -1,0 +1,3 @@
+BCeID,GUID,First Name,Last Name,Email,Organization Name,Business Phone,Status
+user-one,asdf-asdf-asdf-asdf,User,One,userone@gov.bc.ca,Org One,,Active
+user-two,hjkl-hjkl-hjkl-hjkl,User,Two,usertwo@gov.bc.ca,Org Two,,Active
