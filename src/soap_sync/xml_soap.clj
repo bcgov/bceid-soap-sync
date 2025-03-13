@@ -9,7 +9,7 @@
 (defn create-account-detail-item [guid]
   (element :AccountDetailListRequestItem {}
            (element :userGuid {} guid)
-           (element :accountTypeCode {} "Individual")))
+           (element :accountTypeCode {} "Business")))
 
 (defn create-account-detail-list [guids]
   (let [xmlns (System/getenv "ACTION_ROOT")]
