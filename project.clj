@@ -6,7 +6,10 @@
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [org.clojure/data.csv "1.1.0"]
                  [org.clojure/data.xml "0.0.8"]
-                 [clj-http "3.13.0"]]
+                 [clj-http "3.13.0"]
+                 [org.apache.logging.log4j/log4j-api "2.11.0"]
+                 [org.apache.logging.log4j/log4j-core "2.11.0"]
+                 [org.apache.logging.log4j/log4j-1.2-api "2.11.0"]]
   :main ^:skip-aot soap-sync.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all
