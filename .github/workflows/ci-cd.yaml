@@ -2,7 +2,7 @@ name: Clojure CI/CD
 
 on:
   push:
-  workflow-dispatch:
+  workflow_dispatch:
 
 jobs:
 
