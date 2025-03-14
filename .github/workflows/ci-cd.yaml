@@ -1,6 +1,6 @@
 name: Clojure CI/CD
 
-on: [push]
+on: [push, workflow-dispatch]
 
 jobs:
 
