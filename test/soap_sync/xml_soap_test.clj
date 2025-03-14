@@ -26,10 +26,9 @@
                (element :h1))))
       (testing "- We can get the nested divs"
         (is (= (xs/get-elements-by-tag-name :div xml)
-               (:content (element :body {}
-                                  (element :div)
-                                  (element :div)
-                                  (element :div)))))))))
+               (seq [(element :div)
+                     (element :div)
+                     (element :div)])))))))
 
 (deftest create-account-detail-item-test []
   (testing "We get the expected detail item structure"
