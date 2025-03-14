@@ -40,6 +40,4 @@ jobs:
           restore-keys: cljdeps-
 
       - name: Run unit tests
-        run: |
-          lein install
-          lein test
+        run: lein cloverage
