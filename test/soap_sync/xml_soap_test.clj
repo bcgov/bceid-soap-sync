@@ -10,12 +10,33 @@
                         "<test attr=\"value\">inner</test>")]
       (is (= (xs/to-string xml) expected)))))
 
+(deftest to-xml-map-test []
+  (testing "The parse-str wrapper works"
+    (is (= (xs/to-xml-map "<div>test</div>") (element :div {} "test")))))
+
+(deftest get-elements-by-tag-name-test []
+  (testing "We can get XML elements by tag name:\n"
+    (let [xml (element :body {}
+                       (element :h1)
+                       (element :h2 {} (element :div))
+                       (element :div)
+                       (element :div))]
+      (testing "- We can get the H1 tag\n"
+        (is (= (first (xs/get-elements-by-tag-name :h1 xml))
+               (element :h1))))
+      (testing "- We can get the nested divs"
+        (is (= (xs/get-elements-by-tag-name :div xml)
+               (:content (element :body {}
+                                  (element :div)
+                                  (element :div)
+                                  (element :div)))))))))
+
 (deftest create-account-detail-item-test []
   (testing "We get the expected detail item structure"
     (let [guid "xxxx-xxxx-xxxx-xxxx"
           expected (element :AccountDetailListRequestItem {}
                             (element :userGuid {} guid)
-                            (element :accountTypeCode {} "Individual"))]
+                            (element :accountTypeCode {} "Business"))]
       (is (= (xs/create-account-detail-item guid) expected)))))
 
 (deftest create-account-detail-list-test []
