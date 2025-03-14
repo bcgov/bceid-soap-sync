@@ -4,10 +4,10 @@ on: [push]
 
 jobs:
 
-  cloverage:
+  cloverage-unix:
     strategy:
       matrix:
-        os: [ubuntu-latest, macOS-latest, windows-latest]
+        os: [ubuntu-latest, macOS-latest]
 
     runs-on: ${{ matrix.os }}
 
@@ -28,5 +28,51 @@ jobs:
         with:
           lein: 2.11.2 # Leiningen package manager
 
+      # Optional step:
+      - name: Cache clojure dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.gitlibs
+            ~/.deps.clj
+          key: cljdeps-${{ hashFiles('project.clj') }}
+          restore-keys: cljdeps-
+
       - name: Run unit tests
+        run: lein cloverage
+
+  cloverage-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # It is important to install java before installing clojure tools which needs java
+      # exclusions: babashka, clj-kondo and cljstyle
+      - name: Prepare java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '21'
+
+      - name: Install clojure tools
+        uses: DeLaGuardo/setup-clojure@13.2
+        with:
+          lein: 2.11.2 # Leiningen package manager
+
+      # Optional step:
+      - name: Cache clojure dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.gitlibs
+            ~/.deps.clj
+          key: cljdeps-${{ hashFiles('project.clj') }}
+          restore-keys: cljdeps-
+
+      - name: Run unit tests
+        shell: cmd
         run: lein cloverage
