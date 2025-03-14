@@ -5,6 +5,9 @@
 (defn get-guid [row]
   (get row 1))
 
+(defn get-userid [row]
+  (get row 0))
+
 (defn get-input-data [& path]
   (let [input-file (or path (System/getenv "INPUT_CSV"))]
     (rest (with-open [reader (io/reader input-file)]
