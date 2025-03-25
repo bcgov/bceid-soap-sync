@@ -11,7 +11,7 @@
                  [org.apache.logging.log4j/log4j-core "2.11.0"]
                  [org.apache.logging.log4j/log4j-1.2-api "2.11.0"]]
   :plugins [[lein-cloverage "1.2.2"]]
-  :cloverage {:html? false}
+  :cloverage {:html? false :ns-exclude-regex [#"soap-sync.core"]}
   :main ^:skip-aot soap-sync.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all
