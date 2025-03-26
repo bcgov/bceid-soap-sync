@@ -42,7 +42,7 @@ jobs:
           restore-keys: cljdeps-
 
       - name: Run unit tests
-        run: lein cloverage
+        run: INPUT_CSV='./resources/input-test.csv' && lein cloverage
 
   cloverage-windows:
     runs-on: windows-latest
@@ -77,4 +77,6 @@ jobs:
 
       - name: Run unit tests
         shell: cmd
-        run: INPUT_CSV='./resources/input-test.csv' && lein cloverage
+        run: |
+          set INPUT_CSV=.\resources\input-test.csv
+          lein cloverage
