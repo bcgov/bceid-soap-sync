@@ -28,7 +28,7 @@ This tool requires various environment variables to be set for the application r
 - =API_PATH= - The path to the API root (e.g. ~path/to/client/version/~). *include the trailing slash*
 - =ACTION_ROOT= - The API Path for the =SOAPAction= and =xmlns= (XML Namespace)
 
-You may set these variables with a tool such as [[https://direnv.net/][direnv]]. If you are running NixOS, a shell file is provided for dependency installation. You need only add ~use nix~ to your ~.envrc~.
+You may set these variables with a tool such as [[https://direnv.net/][direnv]]. If you are running NixOS, a shell file is provided for dependency installation. You need only add ~use flake~ to your ~.envrc~.
 
 *** Running the tool
 From the project root, run ~lein run~
