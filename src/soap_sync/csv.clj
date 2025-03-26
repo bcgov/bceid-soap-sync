@@ -14,3 +14,7 @@
          (->> (first data)
               repeat)
          (rest data))))
+
+(defn write-output-data [csv-data & out-path]
+  (with-open [writer (io/writer (or (first out-path) "out.csv"))]
+    (csv/write-csv writer csv-data)))
