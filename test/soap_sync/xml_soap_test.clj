@@ -33,11 +33,11 @@
   (testing "We can get the first element in a nested tree."
     (let [xml (element :body {}
                        (element :h2)
-                       (element :h2 {} (element {:name "one"} :h1))
+                       (element :h2 {} (element :h1 {:name "one"}))
                        (element :div)
                        (element :h2))]
       (is (= (xs/get-element-by-tag-name :h1 xml)
-             (element {:name "one"} :h1))))))
+             (element :h1 {:name "one"}))))))
 
 (deftest get-tag-value-test []
   (testing "We can get the innerText of a nested value tag."
