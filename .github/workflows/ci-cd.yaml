@@ -42,7 +42,9 @@ jobs:
           restore-keys: cljdeps-
 
       - name: Run unit tests
-        run: INPUT_CSV='./resources/input-test.csv' && lein cloverage
+        run: |
+          export INPUT_CSV=./resources/input-test.csv
+          cloverage
 
   cloverage-windows:
     runs-on: windows-latest
