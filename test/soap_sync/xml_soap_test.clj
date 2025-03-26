@@ -15,20 +15,34 @@
     (is (= (xs/to-xml-map "<div>test</div>") (element :div {} "test")))))
 
 (deftest get-elements-by-tag-name-test []
-  (testing "We can get XML elements by tag name:\n"
-    (let [xml (element :body {}
-                       (element :h1)
-                       (element :h2 {} (element :div))
-                       (element :div)
-                       (element :div))]
-      (testing "- We can get the H1 tag\n"
-        (is (= (first (xs/get-elements-by-tag-name :h1 xml))
-               (element :h1))))
-      (testing "- We can get the nested divs"
-        (is (= (xs/get-elements-by-tag-name :div xml)
-               (seq [(element :div)
+  (let [xml (element :body {}
+                     (element :h1)
+                     (element :h2 {} (element :div))
                      (element :div)
-                     (element :div)])))))))
+                     (element :div))]
+    (testing "We can get the H1 tag"
+      (is (= (first (xs/get-elements-by-tag-name :h1 xml))
+             (element :h1))))
+    (testing "We can get the nested divs"
+      (is (= (xs/get-elements-by-tag-name :div xml)
+             (seq [(element :div)
+                   (element :div)
+                   (element :div)]))))))
+
+(deftest get-element-by-tag-name-test []
+  (testing "We can get the first element in a nested tree."
+    (let [xml (element :body {}
+                       (element :h2)
+                       (element :h2 {} (element {:name "one"} :h1))
+                       (element :div)
+                       (element :h2))]
+      (is (= (xs/get-element-by-tag-name :h1 xml)
+             (element {:name "one"} :h1))))))
+
+(deftest get-tag-value-test []
+  (testing "We can get the innerText of a nested value tag."
+    (let [xml (element :someThing {} (element :value {} "innerText"))]
+      (is (= (xs/get-tag-value xml) "innerText")))))
 
 (deftest create-account-detail-item-test []
   (testing "We get the expected detail item structure"
@@ -36,11 +50,12 @@
           expected (element :AccountDetailListRequestItem {}
                             (element :userGuid {} guid)
                             (element :accountTypeCode {} "Business"))]
-      (is (= (xs/create-account-detail-item guid) expected)))))
+      (is (= (xs/create-account-detail-item (list guid "userOne")) expected)))))
 
 (deftest create-account-detail-list-test []
   (testing "We get an account detail list with a list of guids"
-    (let [guids '("xxxx-xxxx-xxxx-xxxx" "yyyy-yyyy-yyyy-yyyy")
+    (let [ids '(("xxxx-xxxx-xxxx-xxxx" "userOne")
+                ("yyyy-yyyy-yyyy-yyyy" "userTwo"))
           xmlns (System/getenv "ACTION_ROOT")
           expected (element :getAccountDetailList {:xmlns xmlns}
                             (element :accountDetailListRequest {}
@@ -52,8 +67,8 @@
                                               (System/getenv "ACCOUNT_GUID"))
                                      (element :requestItemList {}
                                               (map xs/create-account-detail-item
-                                                   guids))))]
-      (is (= (xs/create-account-detail-list guids) expected)))))
+                                                   ids))))]
+      (is (= (xs/create-account-detail-list ids) expected)))))
 
 (deftest create-soap-body-test []
   (testing "We wrap soap content in a soap body xml object"
