@@ -44,7 +44,7 @@ jobs:
       - name: Run unit tests
         run: |
           export INPUT_CSV=./resources/input-test.csv
-          cloverage
+          lein cloverage
 
   cloverage-windows:
     runs-on: windows-latest
