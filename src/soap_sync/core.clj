@@ -2,16 +2,20 @@
   (:gen-class)
   (:require [soap-sync.csv :as csv]
             [soap-sync.xml-soap :as xs]
-            [soap-sync.bceid :as bceid]))
+            [clj-http.client :as client]))
 
-;;; Construct an API call with a soap envelope
-;; An example:
-;; (defn test-api-call []
-;;   (bceid/send-soap-request "getAccountDetailList"
-;;                            (-> (map csv/get-guid (csv/get-input-data))
-;;                                xs/create-account-detail-list
-;;                                xs/create-soap-body
-;;                                xs/create-soap-envelope
-;;                                xs/to-string)))
+(defn send-soap-request [action soap-envelope]
+  (let [url (str (System/getenv "SERVICE_SITE")
+                 "/webservices/client/V10/BCeIDService.asmx?WSDL")
+        username (System/getenv "ACCOUNT_NAME")
+        password (System/getenv "ACCOUNT_PASSWORD")
+        headers {"SOAPAction"
+                 (str (System/getenv "ACTION_ROOT") action)}]
+    (client/post url
+                 {:basic-auth [username password]
+                  :headers headers
+                  :body soap-envelope
+                  :content-type "text/xml;charset=utf-8"
+                  :throw-exceptions false})))
 
 (defn -main [])
