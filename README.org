@@ -32,4 +32,4 @@ You may set these variables with a tool such as [[https://direnv.net/][direnv]].
 From the project root, run ~lein run~
 
 ** Customization
-This tool is intended to be re-usable. A SOAP envelope of any kind may be built be using composition. See [[./src/soap_sync/xml_soap.clj][xml-soap]] to see how this can be done. The [[./src/soap_sync/bceid.clj][bceid]] service module will help you make API calls with your envelope. To change things, you need only extend this program as needed and modify the core entry point at [[./src/soap_sync/core.clj][core.clj]].
+This tool is intended to be re-usable. A SOAP envelope of any kind may be built be using composition. See [[./src/soap_sync/xml_soap.clj][xml-soap]] to see how this can be done. To change things, you need only extend this program as needed and modify the core entry point at [[./src/soap_sync/core.clj][core.clj]].
