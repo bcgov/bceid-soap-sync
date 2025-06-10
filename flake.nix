@@ -2,7 +2,7 @@
   description = "A flake for developing bceid-soap-sync";
 
   inputs = {
-    nixpkgs.url = github:NixOS/nixpkgs;
+    nixpkgs.url = "github:NixOS/nixpkgs";
   };
 
   outputs = { self, nixpkgs }:
@@ -14,6 +14,7 @@
       buildInputs = with pkgs; [
         jdk21
         leiningen
+        clojure-lsp
       ];
       JAVA_HOME="${pkgs.jdk21}";
     };
