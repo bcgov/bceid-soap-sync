@@ -13,4 +13,7 @@ pom.xml.asc
 .hg/
 .envrc
 .direnv
+.clj-kondo/
+.lsp/
+log/
 /*.csv
