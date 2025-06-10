@@ -17,12 +17,14 @@ Clojure is a language built to run on the JVM. Aside from JDK you will also need
 5. Developers: check out some suggested [editor plugins](https://clojure.org/guides/editors)
    to make developing with Clojure way more fun.
 
-### CSV Data This tool requires a CSV export of incomplete user data and is
-opinionated in how that CSV data is structured. See the [test
-data](./resources/input-test.csv) for an example.
+### CSV Data
+This tool requires a CSV export of incomplete user data and is opinionated in
+how that CSV data is structured. See the [test data](./resources/input-test.csv)
+for an example.
 
-### Set Environment Variables This tool requires various environment variables
-to be set for the application runtime to work. They are:
+### Set Environment Variables
+This tool requires various environment variables to be set for the application
+runtime to work. They are:
 
 - `INPUT_CSV` - Absolute path to the input data
 - `ACCOUNT_NAME` - The IDIR service account for looking data up with
@@ -39,10 +41,11 @@ You may set these variables with a tool such as [direnv](https://direnv.net/).
 If you are running NixOS, a shell file is provided for dependency installation.
 You need only add ~use flake~ to your ~.envrc~.
 
-### Running the tool From the project root, run `lein run`
+### Running the tool
+From the project root, run `lein run`
 
-## Customization This tool is intended to be re-usable. A SOAP envelope of any
-kind may be built be using composition. See
-[xml-soap](./src/soap_sync/xml_soap.clj) to see how this can be done. To change
-things, you need only extend this program as needed and modify the core entry
-point at [core.clj](./src/soap_sync/core.clj).
+## Customization
+This tool is intended to be re-usable. A SOAP envelope of any kind may be built
+be using composition. See [xml-soap](./src/soap_sync/xml_soap.clj) to see how
+this can be done. To change things, you need only extend this program as needed
+and modify the core entry point at [core.clj](./src/soap_sync/core.clj).
