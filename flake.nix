@@ -14,7 +14,6 @@
       buildInputs = with pkgs; [
         jdk21
         leiningen
-        clojure-lsp
       ];
       JAVA_HOME="${pkgs.jdk21}";
     };
