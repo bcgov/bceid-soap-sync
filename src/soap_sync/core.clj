@@ -50,8 +50,6 @@
         xs/to-string
         (vector ids))))
 
-(prepare-callout (csv/get-input-data))
-
 (defn process-api-callouts [callouts]
   (let [channel (chan)]
     (thread (doseq [[envelope ids] callouts]
