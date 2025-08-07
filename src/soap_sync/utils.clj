@@ -5,7 +5,6 @@
   have a maximum item limit."
   [n xs]
   (lazy-seq
-    (when (seq xs)
-      (cons (take n xs)
-            (chunk-rows n (drop n xs))))))
-
+   (when (seq xs)
+     (cons (take n xs)
+           (chunk-rows n (drop n xs))))))

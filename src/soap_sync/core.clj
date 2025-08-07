@@ -1,6 +1,6 @@
 (ns soap-sync.core
   (:gen-class)
-  (:require [clojure.core.async :refer [chan thread <!! >!! close!]]
+  (:require [clojure.core.async :refer [chan <!! <! >! go go-loop close!]]
             [soap-sync.csv :as csv]
             [soap-sync.xml-soap :as xs]
             [soap-sync.utils :refer [chunk-rows]]
@@ -20,9 +20,10 @@
                   :content-type "text/xml;charset=utf-8"
                   :throw-exceptions false})))
 
+
 (defn extract-csv-row [[detail-list-item [guid bceid]]]
   (let [individual (first (xs/get-elements-by-tag-name
-                            :individualIdentity detail-list-item))]
+                           :individualIdentity detail-list-item))]
     [(->> detail-list-item
           (xs/get-element-by-tag-name :userId)
           xs/get-tag-value)
@@ -51,22 +52,25 @@
         (vector ids))))
 
 (defn process-api-callouts [callouts]
-  (let [channel (chan)]
-    (thread (doseq [[envelope ids] callouts]
-              (>!! channel (vector (send-soap-request "getAccountDetailList" envelope)
-                                   ids)))
-            (close! channel))
-    (loop [responses []
-           callout 0]
-      (if-let [[res ids] (<!! channel)]
-        (do
-          (println "Received response from callout " callout)
-          (println "API Response Code: " (:status res))
-          (recur (if-not (= 200 (:status res))
-                   responses
-                   (conj responses (vector (:body res) ids)))
-                 (inc callout)))
-        responses))))
+  (let [response-chan (chan)
+        callout-count (count callouts)]
+    (doseq [[envelope ids] callouts]
+      (go (>! response-chan (vector (send-soap-request "getAccountDetailList" envelope)
+                                    ids))))
+    (<!! (go-loop [responses []
+                   n callout-count]
+           (if (zero? n)
+             (do
+               (close! response-chan)
+               responses)
+             (let [[res ids] (<! response-chan)
+                   callout-num (- callout-count n)]
+               (println "Received response from callout " callout-num)
+               (println "API Response Code: " (:status res))
+               (recur (if-not (= 200 (:status res))
+                        responses
+                        (conj responses (vector (:body res) ids)))
+                      (dec n))))))))
 
 (defn get-detail-list-presponse-item [[response, ids]]
   (map vector
@@ -76,9 +80,9 @@
 
 (defn generate-output-data [response-body]
   (into [] (concat
-             [["User ID" "GUID" "First Name" "Last Name" "Failure Code"
-               "Source BCeID" "Source GUID"]]
-             (map extract-csv-row response-body))))
+            [["User ID" "GUID" "First Name" "Last Name" "Failure Code"
+              "Source BCeID" "Source GUID"]]
+            (map extract-csv-row response-body))))
 
 (defn -main []
   (let [api-responses (->> (chunk-rows 100 (csv/get-input-data))
